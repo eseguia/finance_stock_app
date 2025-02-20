@@ -1,0 +1,30 @@
+
+with open("config.json") as f:
+    config = json.load(f)
+
+api_key = config["api_key"]
+db_connection = config["db_connection"]
+
+engine = create_engine(db_connection)
+conn = engine.connect()
+
+# Create table if it doesn't exist
+create_table_query = """
+CREATE TABLE stocks (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(10),
+    price DECIMAL(10,2),
+    timestamp TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE alerts (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(10) NOT NULL,
+    threshold DECIMAL(10,2) NOT NULL,
+    direction VARCHAR(5) CHECK (direction IN ('up', 'down')),
+    notified BOOLEAN DEFAULT FALSE
+);
+"""
+
+with engine.begin() as connection:
+    connection.execute(create_table_query)

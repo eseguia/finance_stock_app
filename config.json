@@ -1,0 +1,4 @@
+{
+    "api_key": "curjp0pr01qt2ncfh840curjp0pr01qt2ncfh84g",
+    "db_connection": "postgresql://postgres:postgres@localhost:5432/fin_data"
+}
